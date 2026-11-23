@@ -224,4 +224,5 @@ dependencies {
 configurations.all {
     exclude(group = "com.google.android.gms", module = "play-services-cast")
     exclude(group = "com.google.android.gms", module = "play-services-cast-framework")
+    exclude(group = "com.google.android.material", module = "material")
 }
