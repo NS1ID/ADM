@@ -225,4 +225,5 @@ configurations.all {
     exclude(group = "com.google.android.gms")
     exclude(group = "com.google.android.material")
     exclude(group = "com.google.mlkit")
+    exclude(group = "com.google.firebase")
 }
