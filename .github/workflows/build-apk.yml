@@ -18,11 +18,10 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install required SDK packages
+      - name: Install Android SDK packages (GitHub runners ship the SDK)
         run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/cmdline-tools/16.0/bin:$PATH"
+          which sdkmanager
           yes | sdkmanager --licenses > /dev/null || true
           sdkmanager "platform-tools" "platforms;android-37" "platforms;android-37.1" "build-tools;37.0.0"
 
