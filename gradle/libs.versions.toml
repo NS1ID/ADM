@@ -13,7 +13,7 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 # The androidx Compose artifacts take their versions from this BOM.
-composeBom = "2026.11.01"
+composeBom = "2024.09.03"
 collectionVersion = "1.5.0"
 
 [libraries]
