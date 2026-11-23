@@ -18,12 +18,11 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      - name: Install Android SDK packages (GitHub runners ship the SDK)
+      - name: Check Android SDK
         run: |
-          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/cmdline-tools/16.0/bin:$PATH"
-          which sdkmanager
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platform-tools" "platforms;android-37" "platforms;android-37.1" "build-tools;37.0.0"
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME/platforms" || true
+          ls "$ANDROID_HOME/build-tools" || true
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
