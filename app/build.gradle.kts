@@ -223,4 +223,5 @@ dependencies {
 // newer minSdk than the Android 5 (API 21) baseline, so minSdk can stay at 21.
 configurations.all {
     exclude(group = "com.google.android.gms", module = "play-services-cast")
+    exclude(group = "com.google.android.gms", module = "play-services-cast-framework")
 }
