@@ -218,3 +218,9 @@ dependencies {
     // Material icons extended (download, vpn, extensions, etc.).
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 }
+
+// Universal build: drop transitive Google Play services libraries that demand a
+// newer minSdk than the Android 5 (API 21) baseline, so minSdk can stay at 21.
+configurations.all {
+    exclude(group = "com.google.android.gms", module = "play-services-cast-framework")
+}
