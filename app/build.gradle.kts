@@ -229,7 +229,7 @@ dependencies {
 // res/drawable (requires API 26). With minSdk 21 AAPT2 fails to compile them.
 // Replace them with a simple API-21-safe drawable in the Gradle transform cache
 // before resource merging.
-val patchCefriumAdaptiveIcons by tasks.registering {
+val patchCefriumAdaptiveIcons = tasks.register("patchCefriumAdaptiveIcons") {
     doLast {
         val home = gradle.gradleUserHomeDir
         val targets = fileTree(home) {
@@ -249,12 +249,13 @@ val patchCefriumAdaptiveIcons by tasks.registering {
     }
 }
 
-tasks.matching { name ->
-    name.startsWith("merge") && name.endsWith("Resources") ||
-    name.startsWith("generate") && name.endsWith("Resources") ||
-    name.startsWith("map") && name.endsWith("SourceSetPaths") ||
-    name.startsWith("process") && name.endsWith("Resources") ||
-    name.contains("compile") && name.contains("LibraryResources")
+tasks.matching { task ->
+    val n = task.name
+    (n.startsWith("merge") && n.endsWith("Resources")) ||
+    (n.startsWith("generate") && n.endsWith("Resources")) ||
+    (n.startsWith("map") && n.endsWith("SourceSetPaths")) ||
+    (n.startsWith("process") && n.endsWith("Resources")) ||
+    (n.contains("compile") && n.contains("LibraryResources"))
 }.configureEach {
     dependsOn(patchCefriumAdaptiveIcons)
 }
