@@ -14,7 +14,7 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 # The androidx Compose artifacts take their versions from this BOM.
 composeBom = "2026.11.01"
-collectionVersion = "1.4.2"
+collectionVersion = "1.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

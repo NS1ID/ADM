@@ -140,12 +140,11 @@ android {
             force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.3.21")
             force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21")
 
-            // Force specific AndroidX versions to avoid conflicts.
-            force("androidx.collection:collection:1.4.2")
-            force("androidx.annotation:annotation:1.8.1")
-            force("androidx.core:core-ktx:1.16.0")
-            force("androidx.core:core:1.16.0")
-            force("androidx.collection:collection-ktx:1.4.2")
+            // AndroidX versions are resolved by Gradle + the Compose BOM.
+            // The old force() pins below (needed only for AndroidIDE's offline local
+            // Maven repo) are deliberately removed: they downgrade androidx.collection
+            // to 1.4.2, which lacks classes the current Compose UI requires
+            // (androidx.collection.OrderedScatterSetKt), crashing the app at launch.
         }
     }
 }
