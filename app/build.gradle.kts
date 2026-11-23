@@ -222,8 +222,7 @@ dependencies {
 // Universal build: drop transitive Google Play services libraries that demand a
 // newer minSdk than the Android 5 (API 21) baseline, so minSdk can stay at 21.
 configurations.all {
-    exclude(group = "com.google.android.gms", module = "play-services-cast")
-    exclude(group = "com.google.android.gms", module = "play-services-cast-framework")
-    exclude(group = "com.google.android.material", module = "material")
-    exclude(group = "com.google.mlkit", module = "genai-prompt")
+    exclude(group = "com.google.android.gms")
+    exclude(group = "com.google.android.material")
+    exclude(group = "com.google.mlkit")
 }
