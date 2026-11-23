@@ -173,7 +173,7 @@ dependencies {
     implementation(libs.collection.ktx)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.material3)
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.7.0")
     implementation(libs.kotlin.stdlib) {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk7")
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk8")
@@ -223,6 +223,9 @@ dependencies {
 // Universal build: drop transitive Google libraries that demand a newer minSdk than
 // the Android 5 (API 21) baseline, so minSdk can stay at 21.
 configurations.all {
+    resolutionStrategy {
+        force("com.google.android.material:material:1.7.0")
+    }
     exclude(group = "com.google.android.gms")
     exclude(group = "com.google.mlkit")
     exclude(group = "com.google.firebase")
