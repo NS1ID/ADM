@@ -28,6 +28,7 @@ class AdmApplication : Application() {
         // main-process work there kills the engine so no page renders. Return early.
         if (packageName != Application.getProcessName()) return
 
+        installCrashReporter()
         instance = this
         SettingsStore.init(this)
         AppDatabase.init(this)
@@ -39,6 +40,26 @@ class AdmApplication : Application() {
         // this only warms the filter lists.
         ChromiumEngine.init(this)
         createNotificationChannels()
+    }
+
+    /** Writes every uncaught crash to a file the user can find in Downloads. */
+    private fun installCrashReporter() {
+        val previous = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, error ->
+            runCatching {
+                val dir = getExternalFilesDir(null) ?: cacheDir
+                val file = java.io.File(dir, "crash-report.txt")
+                file.appendText(
+                    buildString {
+                        append("ADM+ crash — ").append(java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(java.util.Date())).append('\n')
+                        append("Thread: ").append(thread.name).append('\n')
+                        append("Error: ").append(error.javaClass.name).append(": ").append(error.message).append("\n\n")
+                        append(error.stackTraceToString())
+                    }
+                )
+            }
+            previous?.uncaughtException(thread, error)
+        }
     }
 
     private fun createNotificationChannels() {
