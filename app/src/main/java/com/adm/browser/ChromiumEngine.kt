@@ -84,6 +84,19 @@ object ChromiumEngine {
     fun state(tabId: String): ChromiumTabState = states[tabId] ?: ChromiumTabState()
 
     /**
+     * Extract the visible text of a tab's page for features such as the AI assistant.
+     * The callback receives the text (or an empty string) on the main thread.
+     */
+    fun pageText(tabId: String, callback: (String) -> Unit) {
+        val tab = tabs[tabId] ?: run { callback(""); return }
+        runCatching {
+            tab.browser.evaluateJavaScript(
+                "(function(){return document.body?document.body.innerText.slice(0,6000):'';})()",
+            ) { value -> callback(value?.removeSurrounding("\"").orEmpty()) }
+        }.onFailure { callback("") }
+    }
+
+    /**
      * Create the engine instance for [tab] on first use. The returned `view` must then
      * be attached to the view hierarchy by the hosting screen.
      */

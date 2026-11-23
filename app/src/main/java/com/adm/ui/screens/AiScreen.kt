@@ -67,11 +67,7 @@ fun AiScreen() {
         val tab = TabManager.active
         val tabId = tab?.id
         if (tabId != null && SettingsStore.aiIncludePage) {
-            runCatching {
-                ChromiumEngine.tabFor(tab).evaluateJavaScript(
-                    "(function(){return document.body?document.body.innerText.slice(0,6000):'';})()",
-                ) { result -> pageText = result?.removeSurrounding("\"") }
-            }
+            ChromiumEngine.pageText(tabId) { text -> pageText = text }
         }
 
         scope.launch {
