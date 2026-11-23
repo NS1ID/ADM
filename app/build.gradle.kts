@@ -239,8 +239,10 @@ val patchCefriumAdaptiveIcons = tasks.register("patchCefriumAdaptiveIcons") {
         val roots = listOf(gradle.gradleUserHomeDir, rootProject.projectDir, layout.buildDirectory.get().asFile)
         val targets = roots.flatMap { root ->
             if (!root.exists()) emptyList() else fileTree(root) {
-                include("**/ic_launcher.xml")
-                include("**/ic_launcher_round.xml")
+                include("**/res/drawable/ic_launcher.xml")
+                include("**/res/drawable/ic_launcher_round.xml")
+                include("**/res/drawable-v*/ic_launcher.xml")
+                include("**/res/drawable-v*/ic_launcher_round.xml")
             }.files.filter { it.isFile && it.readText().contains("<adaptive-icon") }
         }
         targets.forEach { f ->
@@ -250,8 +252,8 @@ val patchCefriumAdaptiveIcons = tasks.register("patchCefriumAdaptiveIcons") {
         // Also remove any precompiled flats so AAPT2 relinks from patched sources.
         val flats = roots.flatMap { root ->
             if (!root.exists()) emptyList() else fileTree(root) {
-                include("**/ic_launcher*.flat")
-                include("**/ic_launcher_round*.flat")
+                include("**/*ic_launcher*.flat")
+                include("**/*ic_launcher_round*.flat")
             }.files.filter { it.isFile }
         }
         flats.forEach { f -> f.delete(); logger.lifecycle("Deleted stale flat: ${f}") }
