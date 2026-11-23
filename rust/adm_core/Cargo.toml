@@ -1,0 +1,31 @@
+[package]
+name = "adm_core"
+version = "1.0.0"
+edition = "2021"
+description = "ADM+ native core: segmented download engine, media sniffer, ad-block matcher, rule parser and LAN proxy"
+license = "MIT"
+
+[lib]
+name = "adm_core"
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+# JNI glue used by the Kotlin NativeCore object.
+jni = "0.21"
+# HTTP stack for the segmented downloader and media probing.
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "rustls-tls", "gzip", "brotli", "stream"] }
+# JSON in/out for the FFI boundary (kept flat & dependency-light).
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Hashing for download verification and content addressing.
+sha2 = "0.10"
+# URL/percent handling in the sniffer and proxy.
+url = "2"
+percent-encoding = "2"
+# Lightweight, allocation-friendly regex for user rules and sniffing.
+regex = "1"
+# Logging shim; UI can read the ring buffer through nativeLogDrain().
+log = "0.4"
+
+[target.'cfg(target_os = "android")'.dependencies]
+android_logger = "0.14"

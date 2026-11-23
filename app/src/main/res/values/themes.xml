@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Transparent activity used when ADM+ is launched from a share intent. -->
+    <style name="AppTheme.Transparent" parent="android:Theme.Translucent.NoTitleBar" />
+
+    <style name="AppTheme.Splash" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>
