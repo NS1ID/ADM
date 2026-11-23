@@ -132,6 +132,33 @@ object SettingsStore {
         get() = prefs.getStringSet(KEY_VPN_BYPASS, emptySet())!!
         set(v) = prefs.edit().putStringSet(KEY_VPN_BYPASS, v).apply()
 
+    // ---- AI assistant ------------------------------------------------------
+
+    var aiProvider: String
+        get() = prefs.getString(KEY_AI_PROVIDER, "OpenAI Compatible")!!
+        set(v) = prefs.edit().putString(KEY_AI_PROVIDER, v).apply()
+
+    var aiEndpoint: String
+        get() = prefs.getString(KEY_AI_ENDPOINT, "https://api.openai.com/v1/chat/completions")!!
+        set(v) = prefs.edit().putString(KEY_AI_ENDPOINT, v).apply()
+
+    /** API key is encrypted with the Android Keystore before being stored. */
+    var aiApiKey: String
+        get() = com.adm.ai.SecureStore.decrypt(prefs.getString(KEY_AI_KEY, "") ?: "")
+        set(v) = prefs.edit().putString(KEY_AI_KEY, com.adm.ai.SecureStore.encrypt(v)).apply()
+
+    var aiModel: String
+        get() = prefs.getString(KEY_AI_MODEL, "gpt-4o-mini")!!
+        set(v) = prefs.edit().putString(KEY_AI_MODEL, v).apply()
+
+    var aiSystemPrompt: String
+        get() = prefs.getString(KEY_AI_SYSTEM, "")!!
+        set(v) = prefs.edit().putString(KEY_AI_SYSTEM, v).apply()
+
+    var aiIncludePage: Boolean
+        get() = prefs.getBoolean(KEY_AI_PAGE, true)
+        set(v) = prefs.edit().putBoolean(KEY_AI_PAGE, v).apply()
+
     private const val KEY_HOMEPAGE = "homepage"
     private const val KEY_SEARCH = "search"
     private const val KEY_DESKTOP = "desktop_mode"
@@ -158,4 +185,10 @@ object SettingsStore {
     private const val KEY_VPN_ADBLOCK = "vpn_adblock"
     private const val KEY_VPN_DNS = "vpn_dns"
     private const val KEY_VPN_BYPASS = "vpn_bypass"
+    private const val KEY_AI_PROVIDER = "ai_provider"
+    private const val KEY_AI_ENDPOINT = "ai_endpoint"
+    private const val KEY_AI_KEY = "ai_api_key_enc"
+    private const val KEY_AI_MODEL = "ai_model"
+    private const val KEY_AI_SYSTEM = "ai_system_prompt"
+    private const val KEY_AI_PAGE = "ai_include_page"
 }

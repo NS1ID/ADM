@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Router
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material.icons.filled.VpnLock
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.core.content.ContextCompat
 import com.adm.browser.ChromiumEngine
 import com.adm.browser.TabManager
+import com.adm.ui.screens.AiScreen
 import com.adm.ui.screens.BrowserScreen
 import com.adm.ui.screens.DownloadsScreen
 import com.adm.ui.screens.ExtensionsScreen
@@ -94,6 +96,7 @@ class MainActivity : ComponentActivity() {
 /** One destination in the bottom bar. */
 private enum class Destination(val label: String, val icon: ImageVector) {
     BROWSER("Browser", Icons.Filled.Public),
+    AI("AI", Icons.Filled.AutoAwesome),
     DOWNLOADS("Downloads", Icons.Filled.Download),
     TORRENTS("Torrents", Icons.Filled.SwapVert),
     VPN("VPN", Icons.Filled.VpnLock),
@@ -123,6 +126,7 @@ private fun AppShell() {
         Column(Modifier.fillMaxSize().padding(innerPadding)) {
             when (selected) {
                 Destination.BROWSER -> BrowserScreen(embedded = true)
+                Destination.AI -> AiScreen()
                 Destination.DOWNLOADS -> DownloadsScreen()
                 Destination.TORRENTS -> TorrentScreen()
                 Destination.VPN -> VpnScreen()
