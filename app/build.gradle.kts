@@ -173,7 +173,7 @@ dependencies {
     implementation(libs.collection.ktx)
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.material3)
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("com.google.android.material:material:1.14.0")
     implementation(libs.kotlin.stdlib) {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk7")
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jdk8")
@@ -220,13 +220,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 }
 
-// Universal build: drop transitive Google libraries that demand a newer minSdk than
-// the Android 5 (API 21) baseline, so minSdk can stay at 21.
-configurations.all {
-    resolutionStrategy {
-        force("com.google.android.material:material:1.7.0")
-    }
-    exclude(group = "com.google.android.gms")
-    exclude(group = "com.google.mlkit")
-    exclude(group = "com.google.firebase")
-}
+// Universal build: the Android 5 (API 21) baseline is kept via
+// <uses-sdk tools:overrideLibrary> in AndroidManifest.xml, so transitive
+// libraries that declare a higher minSdk (Material 1.14, Google Play services,
+// Firebase, ML Kit, Compose) are permitted to ship in the universal APK.
