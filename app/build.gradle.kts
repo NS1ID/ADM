@@ -224,3 +224,37 @@ dependencies {
 // <uses-sdk tools:overrideLibrary> in AndroidManifest.xml, so transitive
 // libraries that declare a higher minSdk (Material 1.14, Google Play services,
 // Firebase, ML Kit, Compose) are permitted to ship in the universal APK.
+
+// Cefrium sdk-core ships ic_launcher*.xml as <adaptive-icon> in unqualified
+// res/drawable (requires API 26). With minSdk 21 AAPT2 fails to compile them.
+// Replace them with a simple API-21-safe drawable in the Gradle transform cache
+// before resource merging.
+val patchCefriumAdaptiveIcons by tasks.registering {
+    doLast {
+        val home = gradle.gradleUserHomeDir
+        val targets = fileTree(home) {
+            include("**/transformed/cefrium-sdk-core-*/res/drawable/ic_launcher.xml")
+            include("**/transformed/cefrium-sdk-core-*/res/drawable/ic_launcher_round.xml")
+        }.files
+        val safe = """<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@android:color/white"/>
+</shape>
+"""
+        targets.forEach { f ->
+            f.parentFile.mkdirs()
+            f.writeText(safe)
+            logger.lifecycle("Patched Cefrium adaptive icon: ${f}")
+        }
+    }
+}
+
+tasks.matching { name ->
+    name.startsWith("merge") && name.endsWith("Resources") ||
+    name.startsWith("generate") && name.endsWith("Resources") ||
+    name.startsWith("map") && name.endsWith("SourceSetPaths") ||
+    name.startsWith("process") && name.endsWith("Resources") ||
+    name.contains("compile") && name.contains("LibraryResources")
+}.configureEach {
+    dependsOn(patchCefriumAdaptiveIcons)
+}
