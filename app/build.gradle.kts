@@ -50,9 +50,10 @@ android {
 
     defaultConfig {
         applicationId = "com.adm"
-        // The bundled Chromium engine targets API 29+, and 64-bit is required for
-        // Play submission. targetSdk stays modern.
-        minSdk = 29
+        // Universal: minimum Android 5.0 (API 21) so it also runs on older devices;
+        // targetSdk stays modern. Both 32-bit (armeabi-v7a) and 64-bit (arm64-v8a) ABIs
+        // are packaged so the app supports ARM32 and ARM64 at the same time.
+        minSdk = 21
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -64,13 +65,12 @@ android {
         // The engine ships one libcef.so per ABI inside the SDK's multi-ABI artifact;
         // listing the ABIs in the app keeps it off architectures with no engine.
         // Rust (JNI/FFI) native libraries are picked up from app/src/main/jniLibs.
-        //
-        // Only arm64-v8a is packaged: the engine's three native artifacts total
-        // ~240 MB, and merging all of them into one APK is both huge to install and
-        // too heavy to assemble on a memory-constrained machine. A single-ABI APK is
-        // the distribution model this build uses (see the packaging note below).
+        // Both 32-bit (armeabi-v7a) and 64-bit (arm64-v8a) ABIs are packaged so the
+        // app runs on ARM32 as well as ARM64 devices. The engine's native artifacts
+        // are split per ABI in the Cefrium multi-ABI artifact, and the Rust JNI
+        // libs come from app/src/main/jniLibs (armeabi-v7a when present).
         ndk {
-            abiFilters += listOf("arm64-v8a")
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
         }
     }
 
